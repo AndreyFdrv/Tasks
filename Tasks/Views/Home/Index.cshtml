@@ -1,0 +1,49 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Задачи";
+}
+
+<h1>Задача 1 - перевод в двоичную систему</h1>
+@using (Html.BeginForm("Task1", "Home", FormMethod.Post))
+{
+    <div>
+        Введите число от 0 до 2048<br />
+        <input type="number" name="number" /><br />
+        <input type="submit" value="Отправить" />
+    </div>
+}
+Результат: @ViewBag.Result1
+
+<h1>Задача 2 - перевод в шестнадцеричную систему</h1>
+@using (Html.BeginForm("Task2", "Home", FormMethod.Post))
+{
+    <div>
+        Введите число от 0 до 2048<br />
+        <input type="number" name="number" /><br />
+        <input type="submit" value="Отправить" />
+    </div>
+}
+Результат: @ViewBag.Result2
+
+<h1>Задача 3 - создание массива</h1>
+@using (Html.BeginForm("Task3", "Home", FormMethod.Post))
+{
+    <div>
+        Введите число от 0 до 2048<br />
+        <input type="number" name="number" /><br />
+        <input type="submit" value="Отправить" />
+    </div>
+}
+Результат: @ViewBag.Result3
+
+<h1>Задача 4 - создание массива чисел Фиббоначи</h1>
+@using (Html.BeginForm("Task4", "Home", FormMethod.Post))
+{
+    <div>
+        Введите число от 0 до 30<br />
+        <input type="number" name="number" /><br />
+        <input type="submit" value="Отправить" />
+    </div>
+}
+Результат: @ViewBag.Result4
