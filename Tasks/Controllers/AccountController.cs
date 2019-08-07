@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Tasks.Web.Models;
@@ -20,7 +21,7 @@ namespace Tasks.Web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -74,6 +75,7 @@ namespace Tasks.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["UserRoles"] = UserManager.GetRoles(UserManager.FindByName(model.Login).Id);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.Failure:
                 default:
@@ -90,6 +92,17 @@ namespace Tasks.Web.Controllers
             return View();
         }
 
+        private async void AddAllRoles(string userID)
+        {
+            await UserManager.AddToRoleAsync(userID, "Task1");
+            await UserManager.AddToRoleAsync(userID, "Task2");
+            await UserManager.AddToRoleAsync(userID, "Task3");
+            await UserManager.AddToRoleAsync(userID, "Task4");
+            await UserManager.AddToRoleAsync(userID, "Task5");
+            await UserManager.AddToRoleAsync(userID, "Task6");
+            await UserManager.AddToRoleAsync(userID, "Task7");
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -99,10 +112,11 @@ namespace Tasks.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Login, Email = model.Password };
+                var user = new ApplicationUser { UserName = model.Login };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    AddAllRoles(user.Id);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     return RedirectToAction("Index", "Home");
@@ -121,6 +135,7 @@ namespace Tasks.Web.Controllers
         public ActionResult LogOff()
         {
             HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session["UserRoles"] = new List<string>();
             return RedirectToAction("Index", "Home");
         }
 

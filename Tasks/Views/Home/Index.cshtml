@@ -1,49 +1,105 @@
 ﻿@{
-    /**/
+                /**/
 
-    ViewBag.Title = "Задачи";
+                /**/
+
+                ViewBag.Title = "Задачи";
 }
 
-<h1>Задача 1 - перевод в двоичную систему</h1>
-@using (Html.BeginForm("Task1", "Home", FormMethod.Post))
+@if (((List<string>)Session["UserRoles"]).Contains("Task1"))
 {
-    <div>
-        Введите число от 0 до 2048<br />
-        <input type="number" name="number" /><br />
-        <input type="submit" value="Отправить" />
-    </div>
+    <h1>Задача 1 - перевод в двоичную систему</h1>
+    using (Html.BeginForm("Task1", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите число от 0 до 2048<br />
+            <input type="number" name="number" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result1</div>
 }
-Результат: @ViewBag.Result1
 
-<h1>Задача 2 - перевод в шестнадцеричную систему</h1>
-@using (Html.BeginForm("Task2", "Home", FormMethod.Post))
+@if (((List<string>)Session["UserRoles"]).Contains("Task2"))
 {
-    <div>
-        Введите число от 0 до 2048<br />
-        <input type="number" name="number" /><br />
-        <input type="submit" value="Отправить" />
-    </div>
+    <h1>Задача 2 - перевод в шестнадцеричную систему</h1>
+    using (Html.BeginForm("Task2", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите число от 0 до 2048<br />
+            <input type="number" name="number" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result2</div>
 }
-Результат: @ViewBag.Result2
 
-<h1>Задача 3 - создание массива</h1>
-@using (Html.BeginForm("Task3", "Home", FormMethod.Post))
+@if (((List<string>)Session["UserRoles"]).Contains("Task3"))
 {
-    <div>
-        Введите число от 0 до 2048<br />
-        <input type="number" name="number" /><br />
-        <input type="submit" value="Отправить" />
-    </div>
+    <h1>Задача 3 - создание массива</h1>
+    using (Html.BeginForm("Task3", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите число от 0 до 2048<br />
+            <input type="number" name="number" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result3</div>
 }
-Результат: @ViewBag.Result3
 
-<h1>Задача 4 - создание массива чисел Фиббоначи</h1>
-@using (Html.BeginForm("Task4", "Home", FormMethod.Post))
+@if (((List<string>)Session["UserRoles"]).Contains("Task4"))
 {
-    <div>
-        Введите число от 0 до 30<br />
-        <input type="number" name="number" /><br />
-        <input type="submit" value="Отправить" />
-    </div>
+    <h1>Задача 4 - создание массива чисел Фиббоначи</h1>
+    using (Html.BeginForm("Task4", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите число от 0 до 30<br />
+            <input type="number" name="number" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result4</div>
 }
-Результат: @ViewBag.Result4
+
+@if (((List<string>)Session["UserRoles"]).Contains("Task5"))
+{
+    <h1>Задача 5 - добавить пользователя</h1>
+    using (Html.BeginForm("Task5", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите логин и пароль, разделенные символом "/" (например login/password)<br />
+            <input type="text" name="input" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result5</div>
+}
+
+@if (((List<string>)Session["UserRoles"]).Contains("Task6"))
+{
+    <h1>Задача 6 - изменить права доступа</h1>
+    using (Html.BeginForm("Task6", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите логин и права доступа. Логин отделите символом "/", права - символом ";" (например login/а;б;в)<br />
+            <input type="text" name="input" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result6</div>
+}
+
+@if (((List<string>)Session["UserRoles"]).Contains("Task7"))
+{
+    <h1>Задача 7 - инверсия слов</h1>
+    using (Html.BeginForm("Task7", "Home", FormMethod.Post))
+    {
+        <div>
+            Введите текст<br />
+            <input type="text" name="input" /><br />
+            <input type="submit" value="Отправить" />
+        </div>
+    }
+    <div>Результат: @ViewBag.Result7</div>
+}

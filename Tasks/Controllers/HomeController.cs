@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Text;
 using Tasks.Adapter.History;
 using Tasks.DataLayer;
+using Tasks.Web.Models;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Tasks.Web.Controllers
 {
@@ -58,7 +63,6 @@ namespace Tasks.Web.Controllers
                 }
             }
         }
-
 
         private int Partition(int[] array, int left, int right)
         {
@@ -126,6 +130,110 @@ namespace Tasks.Web.Controllers
             ViewBag.Result4 = array.Where(x => x % 2 == 0).Sum();
 
             var historyRow = GetHistoryRow(number.ToString(), ViewBag.Result4, User.Identity.Name, DateTime.Now);
+            _historyService.AddHistoryRecord(historyRow);
+            return View("Index");
+        }
+
+        public async Task<ActionResult> Task5(string input)
+        {
+            var inputParts = input.Split('/').ToList();
+            var login = inputParts[0];
+            inputParts.RemoveAt(0);
+            var password = string.Join("/", inputParts);
+
+            var user = new ApplicationUser { UserName = login };
+            var result = await HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, password);
+
+            ViewBag.Result5 = password.Length.ToString();
+
+            var historyRow = GetHistoryRow(input, ViewBag.Result5, User.Identity.Name, DateTime.Now);
+            _historyService.AddHistoryRecord(historyRow);
+            return View("Index");
+        }
+
+        private string GetRoleByLetter(string letter)
+        {
+            switch(letter)
+            {
+                case "а":
+                    return "Task1";
+                case "б":
+                    return "Task2";
+                case "в":
+                    return "Task3";
+                case "г":
+                    return "Task4";
+                case "д":
+                    return "Task5";
+                case "е":
+                    return "Task6";
+                case "ё":
+                    return "Task7";
+                default:
+                    return null;
+            }
+        }
+
+        public async Task<ActionResult> Task6(string input)
+        {
+            var inputParts = input.Split('/');
+            var login = inputParts[0];
+            var newRoles = inputParts[1].Split(';').Select(x => GetRoleByLetter(x)).ToList();
+
+            var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = await userManager.FindByNameAsync(login);
+
+            var oldRoles = await userManager.GetRolesAsync(user.Id);
+            foreach(var role in oldRoles)
+            {
+                if (!newRoles.Contains(role))
+                    await userManager.RemoveFromRoleAsync(user.Id, role);
+            }
+
+            foreach (var role in newRoles)
+            {
+                if (!oldRoles.Contains(role))
+                    await userManager.AddToRoleAsync(user.Id, role);
+            }
+
+            ViewBag.Result6 = newRoles.Count.ToString();
+
+            var historyRow = GetHistoryRow(input, ViewBag.Result6, User.Identity.Name, DateTime.Now);
+            _historyService.AddHistoryRecord(historyRow);
+            return View("Index");
+        }
+
+        private string ReverseWords(string input)
+        {
+            var stringBuilder = new StringBuilder(input);
+            int i = 0;
+            while (i < stringBuilder.ToString().Length)
+            {
+                while (!Char.IsLetter(stringBuilder[i]))
+                {
+                    i++;
+                    if (i >= stringBuilder.ToString().Length)
+                        return stringBuilder.ToString();
+                }
+                int wordBeginIndex = i;
+                int wordLength = 0;
+                while (i< stringBuilder.ToString().Length && Char.IsLetter(stringBuilder[i]))
+                {
+                    i++;
+                    wordLength++;
+                }
+                var reversedWord = new String(stringBuilder.ToString().Substring(wordBeginIndex, wordLength).Reverse().ToArray());
+                stringBuilder.Remove(wordBeginIndex, wordLength);
+                stringBuilder.Insert(wordBeginIndex, reversedWord);
+            }
+            return stringBuilder.ToString();
+        }
+
+        public ActionResult Task7(string input)
+        {
+            ViewBag.Result7 = ReverseWords(input);
+
+            var historyRow = GetHistoryRow(input, ViewBag.Result7, User.Identity.Name, DateTime.Now);
             _historyService.AddHistoryRecord(historyRow);
             return View("Index");
         }
