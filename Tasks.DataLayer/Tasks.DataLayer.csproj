@@ -64,6 +64,17 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="UsersComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UsersComponent.Designer.cs">
+      <DependentUpon>UsersComponent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsersDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UsersDS.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -85,6 +96,17 @@
     <None Include="Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="UsersDS.xsc">
+      <DependentUpon>UsersDS.xsd</DependentUpon>
+    </None>
+    <None Include="UsersDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>UsersDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="UsersDS.xss">
+      <DependentUpon>UsersDS.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

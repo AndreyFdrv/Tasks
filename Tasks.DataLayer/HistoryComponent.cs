@@ -22,6 +22,11 @@ namespace Tasks.DataLayer
             InitializeComponent();
         }
 
+        public HistoryDS.HistoryDataTable GetAll()
+        {
+            return _ta.GetData();
+        }
+
         public void Update(HistoryDS.HistoryDataTable data)
         {
             using (var ts = new TransactionScope(TransactionScopeOption.Required, new TimeSpan(0, 2, 0, 0)))

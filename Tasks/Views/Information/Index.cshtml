@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Информация";
+}
+
+@using Tasks.Web.Models
+
+@model InformationModel
+
+<h2>История</h2>
+<table border="1">
+    <tr>
+        <th>Входные данные</th>
+        <th>Выходные данные</th>
+        <th>Пользователь</th>
+        <th>Время</th>
+    </tr>
+    @foreach (var historyRecord in Model.History)
+    {
+        <tr>
+            <th>@historyRecord.Input</th>
+            <th>@historyRecord.Output</th>
+            <th>@historyRecord.User</th>
+            <th>@historyRecord.Time</th>
+        </tr>
+    }
+</table>
+@if (Session["AuthenticationTime"] != null)
+{
+    <h3>Время аутентификации пользователя: @Session["AuthenticationTime"]</h3>
+}
+<h2>Права пользователей</h2>
+<table border="1">
+    <tr>
+        <th>Пользователь</th>
+        <th>Права</th>
+    </tr>
+    @foreach (var record in Model.UsersRoles)
+    {
+        <tr>
+            <th>@record.User</th>
+            @if (@record.Roles.Count == 0)
+            {
+                <th></th>
+            }
+            else
+            {
+                <th>@record.Roles.Aggregate((i, j) => i + "; " + j)</th>
+            }
+        </tr>
+    }
+</table>

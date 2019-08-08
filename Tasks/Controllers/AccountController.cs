@@ -75,7 +75,6 @@ namespace Tasks.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    Session["UserRoles"] = UserManager.GetRoles(UserManager.FindByName(model.Login).Id);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.Failure:
                 default:

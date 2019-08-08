@@ -1,4 +1,5 @@
-﻿using Tasks.DataLayer;
+﻿using System.Collections.Generic;
+using Tasks.DataLayer;
 
 namespace Tasks.Adapter.History
 {
@@ -6,5 +7,6 @@ namespace Tasks.Adapter.History
     {
         HistoryDS.HistoryRow CreateRow();
         void AddHistoryRecord(HistoryDS.HistoryRow entity);
+        IEnumerable<HistoryDS.HistoryRow> GetHistory();
     }
 }

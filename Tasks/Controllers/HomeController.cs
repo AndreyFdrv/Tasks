@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
 using Tasks.Adapter.History;
@@ -27,6 +29,11 @@ namespace Tasks.Web.Controllers
         [HttpPost]
         public ActionResult Task1(int number)
         {
+            if (number < 0 || number > 2048)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Число должно быть от 0 до 2048" }, JsonRequestBehavior.AllowGet);
+            }
             ViewBag.Result1 = Convert.ToString(number, 2);
             var historyRow = GetHistoryRow(number.ToString(), ViewBag.Result1, User.Identity.Name, DateTime.Now);
             _historyService.AddHistoryRecord(historyRow);
@@ -36,6 +43,11 @@ namespace Tasks.Web.Controllers
         [HttpPost]
         public ActionResult Task2(int number)
         {
+            if (number < 0 || number > 2048)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Число должно быть от 0 до 2048" }, JsonRequestBehavior.AllowGet);
+            }
             ViewBag.Result2 = Convert.ToString(number, 16);
             var historyRow = GetHistoryRow(number.ToString(), ViewBag.Result2, User.Identity.Name, DateTime.Now);
             _historyService.AddHistoryRecord(historyRow);
@@ -106,6 +118,11 @@ namespace Tasks.Web.Controllers
         [HttpPost]
         public ActionResult Task3(int number)
         {
+            if (number < 1 || number > 2048)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Число должно быть от 1 до 2048" }, JsonRequestBehavior.AllowGet);
+            }
             Random randNum = new Random();
             int[] array = Enumerable.Repeat(0, number).Select(i => randNum.Next(0, 2048)).ToArray();
             Sort1(ref array);
@@ -120,6 +137,11 @@ namespace Tasks.Web.Controllers
 
         public ActionResult Task4(int number)
         {
+            if (number < 0 || number > 30)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Число должно быть от 1 до 30" }, JsonRequestBehavior.AllowGet);
+            }
             int[] array = new int[number];
             if (array.Length > 0)
                 array[0] = 1;
@@ -137,9 +159,24 @@ namespace Tasks.Web.Controllers
         public async Task<ActionResult> Task5(string input)
         {
             var inputParts = input.Split('/').ToList();
+            if(inputParts.Count < 2)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Отсутвует разделитель \"/\"" }, JsonRequestBehavior.AllowGet);
+            }
             var login = inputParts[0];
+            if(string.IsNullOrEmpty(login))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Не был указан логин" }, JsonRequestBehavior.AllowGet);
+            }
             inputParts.RemoveAt(0);
             var password = string.Join("/", inputParts);
+            if (string.IsNullOrEmpty(login))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Не был указан пароль" }, JsonRequestBehavior.AllowGet);
+            }
 
             var user = new ApplicationUser { UserName = login };
             var result = await HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().CreateAsync(user, password);
@@ -177,8 +214,24 @@ namespace Tasks.Web.Controllers
         public async Task<ActionResult> Task6(string input)
         {
             var inputParts = input.Split('/');
+            if (inputParts.Length < 2)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Отсутвует разделитель \"/\"" }, JsonRequestBehavior.AllowGet);
+            }
             var login = inputParts[0];
-            var newRoles = inputParts[1].Split(';').Select(x => GetRoleByLetter(x)).ToList();
+            if (string.IsNullOrEmpty(login))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Не был указан логин" }, JsonRequestBehavior.AllowGet);
+            }
+            var newRoles = string.IsNullOrEmpty(inputParts[1]) ? new List<string>() 
+                : inputParts[1].Split(';').Select(x => GetRoleByLetter(x)).ToList();
+            if(newRoles.Contains(null))
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { message = "Неверный формат прав доступа" }, JsonRequestBehavior.AllowGet);
+            }
 
             var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = await userManager.FindByNameAsync(login);
