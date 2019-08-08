@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Web", "Tasks\Tasks.Web.csproj", "{2D6278F2-A059-49EE-8390-52232123D5AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Web", "Tasks.Web\Tasks.Web.csproj", "{2D6278F2-A059-49EE-8390-52232123D5AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks.Adapter", "Tasks.Adapter\Tasks.Adapter.csproj", "{2503C6A0-C934-4B0D-A300-C652F364BD50}"
 EndProject
